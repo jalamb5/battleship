@@ -19,5 +19,5 @@ test("a ship can be hit", () => {
 test("a ship can be sunk", () => {
   const ship = new Ship(1);
   ship.hit();
-  expect(ship.sunk).toBe(true);
+  expect(ship.isSunk()).toBe(true);
 })
