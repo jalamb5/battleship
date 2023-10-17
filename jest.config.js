@@ -141,6 +141,10 @@ const config = {
   // watchPathIgnorePatterns: [],
   // Whether to use watchman for file crawling
   // watchman: true,
+  "transform": {
+    "^.+\\.js$": "babel-jest"
+  }
+
 };
 
 module.exports = config;
