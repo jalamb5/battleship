@@ -24,3 +24,10 @@ test('ship of size 20 is placed at multiple coordinates', () => {
   board.placeShip(20, [0, 0]);
   expect(board.allShips[0][1].length).toBe(20);
 })
+
+test('gameboard received an attack and hits the correct ship', () => {
+  const board = new gameboard;
+  board.placeShip(3, [0, 0]);
+  board.receiveAttack([1, 0]);
+  expect(board.allShips[0][0].hits).toBe(1);
+})
