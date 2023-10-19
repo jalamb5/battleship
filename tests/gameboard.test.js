@@ -31,3 +31,24 @@ test('gameboard received an attack and hits the correct ship', () => {
   board.receiveAttack([1, 0]);
   expect(board.allShips[0][0].hits).toBe(1);
 })
+
+test('gameboard receives a missed attack and records it', () => {
+  const board = new gameboard;
+  board.receiveAttack([1, 0]);
+  expect(board.missedShots.length).toBe(1);
+})
+
+test('gameOver returns true when all ships are sunk', () => {
+  const board = new gameboard;
+  board.placeShip(1, [0, 0]);
+  board.receiveAttack([0, 0]);
+  expect(board.gameOver()).toBe(true);
+})
+
+test('gameOver returns false if not all ships are sunk', () => {
+  const board = new gameboard;
+  board.placeShip(1, [0, 0]);
+  board.placeShip(2, [1, 0]);
+  board.receiveAttack([0, 0]);
+  expect(board.gameOver()).toBe(false);
+})

@@ -17,12 +17,21 @@ export default class Gameboard {
   // then sends the ‘hit’ function to the correct ship, or records the coordinates of the missed shot.
   receiveAttack(coordinate) {
     const ship = this.#findShip(coordinate);
-    console.log(ship);
     if (ship) {
       ship.hit();
     } else {
       this.missedShots.push(coordinate);
     }
+  }
+
+  gameOver() {
+    let allSunk = true;
+    this.allShips.forEach(ship => {
+      if (!ship[0].isSunk()) {
+        allSunk = false;
+      }
+    })
+    return allSunk;
   }
 
   #buildCoordinates(size, firstCoord, orientation) {
