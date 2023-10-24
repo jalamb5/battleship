@@ -11,7 +11,7 @@ export default class Player {
     if (!this.isHuman) {
       coordinate = this.#aiAttack(player.board);
     }
-    
+
     this.previousPlays.push(coordinate);
     player.board.receiveAttack(coordinate);
   }
@@ -21,7 +21,6 @@ export default class Player {
     if (this.previousPlays.includes(coordinate)) {
       this.#aiAttack(board);
     } else {
-
       return coordinate;
     }
   }
