@@ -5,6 +5,8 @@ export default class DOMbuilder {
       // 2 player containers
     this.playerContainer = document.createElement('div');
     this.aiContainer = document.createElement('div');
+    this.playerContainer.classList.add('player-container');
+    this.aiContainer.classList.add('player-container');
       // each container contains:
         // Player title
         const playerTitle = document.createElement('h2')
@@ -13,10 +15,15 @@ export default class DOMbuilder {
         const aiTitle = document.createElement('h2');
         aiTitle.textContent = 'Computer';
 
-        this.playerContainer.appendChild(playerTitle);
-        this.aiContainer.appendChild(aiTitle);
         // Game board grid (10 x 10)
+        const playerGrid = document.createElement('div');
+        const aiGrid = document.createElement('div');
+        playerGrid.classList.add('grid');
+        aiGrid.classList.add('grid');
+
+      this.playerContainer.append(playerTitle, playerGrid);
+      this.aiContainer.append(aiTitle, aiGrid);
+
     this.gameContainer.append(this.playerContainer, this.aiContainer);
-    // setup game board grids
   }
 }
