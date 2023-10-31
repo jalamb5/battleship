@@ -16,14 +16,25 @@ export default class DOMbuilder {
         aiTitle.textContent = 'Computer';
 
         // Game board grid (10 x 10)
-        const playerGrid = document.createElement('div');
-        const aiGrid = document.createElement('div');
-        playerGrid.classList.add('grid');
-        aiGrid.classList.add('grid');
+        const playerGrid = this.#gridPopulate();
+        const aiGrid = this.#gridPopulate();
 
       this.playerContainer.append(playerTitle, playerGrid);
       this.aiContainer.append(aiTitle, aiGrid);
 
     this.gameContainer.append(this.playerContainer, this.aiContainer);
+  }
+
+  #gridPopulate() {
+    const grid = document.createElement('div');
+    grid.classList.add('grid');
+
+    for (let i = 0; i < 100; i++) {
+      const gridItem = document.createElement('div');
+      gridItem.classList.add('grid-item');
+      gridItem.textContent = i;
+      grid.appendChild(gridItem);
+    }
+    return grid;
   }
 }
