@@ -32,9 +32,18 @@ export default class DOMbuilder {
     for (let i = 0; i < 100; i++) {
       const gridItem = document.createElement('div');
       gridItem.classList.add('grid-item');
-      gridItem.textContent = i;
+      gridItem.dataset.coordinates = this.#coordsPopulate(i);
       grid.appendChild(gridItem);
     }
     return grid;
+  }
+
+  #coordsPopulate(i) {
+    if (i < 10) {
+      return [i, 0];
+    } else {
+      let digits = i.toString().split('');
+      return [digits[1], digits[0]];
+    }
   }
 }

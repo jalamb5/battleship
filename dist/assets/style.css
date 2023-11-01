@@ -25,3 +25,7 @@ body {
   grid-template: repeat(10, 1.5rem) / repeat(10, 1.5rem);
   background-color: gainsboro;
 }
+
+.grid-item {
+  border: 1px solid;
+}
