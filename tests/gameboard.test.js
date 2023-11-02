@@ -1,7 +1,8 @@
-const gameboard = require('../src/gameboard');
+// const gameboard = require('../src/gameboard');
+import Gameboard from "../src/gameboard";
 
 test('a ship is placed at a coordinate', () => {
-  const board = new gameboard;
+  const board = new Gameboard;
   board.placeShip(1, [0, 0]);
   expect(board.allShips.length).toBe(1);
 })
