@@ -1,4 +1,5 @@
-const Player = require('../src/players');
+import Player from "../src/players";
+
 
 test('a human player is created', () => {
   const player = new Player(true);
