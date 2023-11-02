@@ -29,3 +29,11 @@ body {
 .grid-item {
   border: 1px solid;
 }
+
+.hit {
+  background-color: red;
+}
+
+.miss {
+  background-color: black;
+}
