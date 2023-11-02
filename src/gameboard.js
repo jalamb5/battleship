@@ -55,6 +55,3 @@ export default class Gameboard {
     return hitShip;
   }
 }
-
-// module.exports = Gameboard;
-
