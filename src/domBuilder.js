@@ -25,6 +25,14 @@ export default class DOMbuilder {
     this.gameContainer.append(this.playerContainer, this.aiContainer);
   }
 
+  hit(gridItem) {
+    gridItem.classList.add('hit');
+  };
+
+  miss(gridItem) {
+    gridItem.classList.add('miss');
+  }
+
   #gridPopulate() {
     const grid = document.createElement('div');
     grid.classList.add('grid');
