@@ -18,5 +18,3 @@ export default class Gameloop {
     })
   }
 }
-
-// module.exports = Gameloop;
