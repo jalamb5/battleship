@@ -1,5 +1,7 @@
 export default class DOMbuilder {
   constructor() {
+    const ships = {'Carrier': 5, 'Battleship': 4, 'Destroyer': 3, 'Submarine': 3, 'Patrol Boat': 2}
+
     this.gameContainer = document.getElementById('game-container');
     // create containers for elements:
       // 2 player containers
@@ -16,8 +18,8 @@ export default class DOMbuilder {
         aiTitle.textContent = 'Computer';
 
         // Game board grid (10 x 10)
-        const playerGrid = this.#gridPopulate();
-        const aiGrid = this.#gridPopulate();
+        const playerGrid = this.#gridPopulate('human');
+        const aiGrid = this.#gridPopulate('ai');
 
       this.playerContainer.append(playerTitle, playerGrid);
       this.aiContainer.append(aiTitle, aiGrid);
@@ -26,6 +28,7 @@ export default class DOMbuilder {
   }
 
   hit(gridItem) {
+    gridItem.classList.remove('ship');
     gridItem.classList.add('hit');
   };
 
@@ -33,13 +36,17 @@ export default class DOMbuilder {
     gridItem.classList.add('miss');
   }
 
-  #gridPopulate() {
+  ship(gridItem) {
+    gridItem.classList.add('ship');
+  };
+
+  #gridPopulate(player) {
     const grid = document.createElement('div');
-    grid.classList.add('grid');
+    grid.classList.add('grid', player);
 
     for (let i = 0; i < 100; i++) {
       const gridItem = document.createElement('div');
-      gridItem.classList.add('grid-item');
+      gridItem.classList.add('grid-item', player);
       gridItem.dataset.coordinates = this.#coordsPopulate(i);
       grid.appendChild(gridItem);
     }

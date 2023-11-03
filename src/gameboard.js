@@ -11,6 +11,7 @@ export default class Gameboard {
     const newShip = new Ship(size);
     const shipEntry = [newShip, coordinates];
     this.allShips.push(shipEntry);
+    return coordinates;
   }
 
   // receiveAttack function takes coordinates, determines whether or not the attack hit a ship
