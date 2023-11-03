@@ -37,3 +37,7 @@ body {
 .miss {
   background-color: black;
 }
+
+.ship {
+  background-color: blue;
+}
