@@ -10,8 +10,8 @@ export default class Gameloop {
     this.#aiShips();
   }
 
-  gridListeners() {
-    const gridItems = document.querySelectorAll('.grid-item');
+  aiGridListeners() {
+    const gridItems = document.querySelectorAll('.grid-item.ai');
     gridItems.forEach((item) => {
       item.addEventListener("click", () => {
         let coords = item.dataset.coordinates.split(',').map((x) => parseInt(x, 10));
