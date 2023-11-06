@@ -8,6 +8,12 @@ export default class Gameboard {
 
   placeShip(size, firstCoord, orientation='horizontal') {
     const coordinates = this.#buildCoordinates(size, firstCoord, orientation);
+    coordinates.forEach((coord) => {
+      // If a ship already exists at location, reject it.
+      if (this.#findShip(coord)) {
+        return false;
+      }
+    })
     const newShip = new Ship(size);
     const shipEntry = [newShip, coordinates];
     this.allShips.push(shipEntry);
@@ -50,11 +56,11 @@ export default class Gameboard {
   }
 
   #findShip(coordinate) {
-    let hitShip = false;
+    let foundShip = false;
     this.allShips.forEach(ship => {
       if (ship[1].some((x) => x[0] === coordinate[0] && x[1] === coordinate[1])) {
-        hitShip = ship[0];
+        foundShip = ship[0];
     }})
-    return hitShip;
+    return foundShip;
   }
 }
