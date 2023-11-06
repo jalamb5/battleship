@@ -52,7 +52,7 @@ export default class Gameboard {
   #findShip(coordinate) {
     let hitShip = false;
     this.allShips.forEach(ship => {
-      if (ship[1].some((x) => x = coordinate)) {
+      if (ship[1].some((x) => x[0] === coordinate[0] && x[1] === coordinate[1])) {
         hitShip = ship[0];
     }})
     return hitShip;
