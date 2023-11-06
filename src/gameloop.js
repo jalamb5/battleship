@@ -36,7 +36,8 @@ export default class Gameloop {
       while (!coordinates) {
         coordinates = this.#aiShipPlacement(ship);
       }
-
+      
+      // show ai ships while testing.
       coordinates.forEach((coord) => {
         this.page.ship(this.#findGridItem(coord, "ai"));
       });
