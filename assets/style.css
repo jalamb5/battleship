@@ -35,9 +35,9 @@ body {
 }
 
 .miss {
-  background-color: black;
+  background-color: blue;
 }
 
 .ship {
-  background-color: blue;
+  background-color: black;
 }
