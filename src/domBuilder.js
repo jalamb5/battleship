@@ -1,6 +1,8 @@
 export default class DOMbuilder {
   constructor() {
     const ships = {'Carrier': 5, 'Battleship': 4, 'Destroyer': 3, 'Submarine': 3, 'Patrol Boat': 2}
+    this.shipNames = ['Carrier', 'Battleship', 'Destroyer', 'Submarine', 'Patrol Boat'];
+    this.shipSizes = [5, 4, 3, 3, 2];
 
     this.gameContainer = document.getElementById('game-container');
     // create containers for elements:
@@ -21,7 +23,15 @@ export default class DOMbuilder {
         const playerGrid = this.#gridPopulate('human');
         const aiGrid = this.#gridPopulate('ai');
 
-      this.playerContainer.append(playerTitle, playerGrid);
+        this.playerMsg = document.createTextNode('');
+        this.updatePlayerMsg(0);
+        this.playerMsg.id = 'playerMsg';
+
+        const orientationBtn = document.createElement('button');
+        orientationBtn.textContent = 'horizontal';
+        orientationBtn.id = 'orientationBtn';
+
+      this.playerContainer.append(playerTitle, playerGrid, this.playerMsg, orientationBtn);
       this.aiContainer.append(aiTitle, aiGrid);
 
     this.gameContainer.append(this.playerContainer, this.aiContainer);
@@ -39,6 +49,15 @@ export default class DOMbuilder {
   ship(gridItem) {
     gridItem.classList.add('ship');
   };
+
+  hideElement(element) {
+    element.style.display = 'none';
+  }
+
+  updatePlayerMsg(counter) {
+    let msg = this.playerMsg;
+    msg.textContent = `Click grid to place ${this.shipNames[counter]} (size: ${this.shipSizes[counter]})`
+  }
 
   #gridPopulate(player) {
     const grid = document.createElement('div');
