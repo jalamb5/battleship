@@ -56,7 +56,11 @@ export default class DOMbuilder {
 
   updatePlayerMsg(counter) {
     let msg = this.playerMsg;
-    msg.textContent = `Click grid to place ${this.shipNames[counter]} (size: ${this.shipSizes[counter]})`
+    if (counter < 5) {
+      msg.textContent = `Click grid to place ${this.shipNames[counter]} (size: ${this.shipSizes[counter]})`
+    } else {
+      msg.textContent = '';
+    }
   }
 
   #gridPopulate(player) {
