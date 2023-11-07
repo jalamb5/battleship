@@ -11,6 +11,11 @@ export default class Gameloop {
     this.#aiShips();
   }
 
+  start() {
+    this.aiGridListeners();
+    this.humanGridListeners();
+  }
+
   humanGridListeners() {
     this.#orientationBtnListener();
     const orientationBtn = document.getElementById('orientationBtn');
