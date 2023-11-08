@@ -35,6 +35,10 @@ export default class Gameboard {
 
   gameOver() {
     let allSunk = true;
+    // If ships haven't yet been placed, return false.
+    if (this.allShips.length === 0) {
+      return false;
+    }
     this.allShips.forEach(ship => {
       if (!ship[0].isSunk()) {
         allSunk = false;

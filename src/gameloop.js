@@ -6,33 +6,54 @@ export default class Gameloop {
     this.human = new Player(true);
     this.ai = new Player(false);
     this.players = [this.human, this.ai];
+    this.currentPlayer = this.ai;
+    this.round = null;
     this.page = new DOMbuilder();
-    this.shipTypes = {'Carrier': 5, 'Battleship': 4, 'Destroyer': 3, 'Submarine': 3, 'Patrol Boat': 2}
-    this.#aiShips();
   }
 
   start() {
+    this.#aiShips();
     this.aiGridListeners();
     this.humanGridListeners();
+
+    let currentRound = this.round;
+
+    const playRound = () => {
+      if (!this.#gameOver()) {
+        if (currentRound !== this.round) {
+          this.currentPlayer = this.currentPlayer === this.human ? this.ai : this.human;
+          currentRound = this.round;
+        }
+        setTimeout(playRound, 0); // Schedule the next round after a very short delay
+      }
+    };
+
+    playRound();
   }
+
 
   humanGridListeners() {
     this.#orientationBtnListener();
-    const orientationBtn = document.getElementById('orientationBtn');
+    const orientationBtn = document.getElementById("orientationBtn");
     const gridItems = document.querySelectorAll(".grid-item.human");
     let placementCounter = 0;
     let shipSize = [5, 4, 3, 3, 2];
 
     gridItems.forEach((item) => {
       item.addEventListener("click", () => {
-        if (placementCounter >= shipSize.length - 1) {
+        if (placementCounter >= shipSize.length - 1 && !this.round) {
           this.page.hideElement(orientationBtn);
+          this.round = 0;
         }
         const orientation = orientationBtn.textContent;
         let coords = item.dataset.coordinates
           .split(",")
           .map((x) => parseInt(x, 10));
-        let coordinates = this.human.board.placeShip(shipSize[placementCounter], coords, orientation);
+        let coordinates = this.human.board.placeShip(
+          shipSize[placementCounter],
+          coords,
+          orientation
+        );
         // Show ship on screen.
         coordinates.forEach((coord) => {
           this.page.ship(this.#findGridItem(coord, "human"));
@@ -43,64 +64,34 @@ export default class Gameloop {
     });
   }
 
-  // async humanBtnListener() {
-  //   const humanShips = document.getElementById('playerShipsBtn');
-
-  //   humanShips.addEventListener('click', async () => {
-  //     this.#orientationBtnListener();
-  //     for (let entry of Object.entries(this.shipTypes)) {
-  //       const [shipType, shipSize] = entry;
-  //       humanShips.textContent = `Place ${shipType}`;
-  //       humanShips.dataset.shipSize = shipSize;
-  //       await this.#humanGridListeners(shipSize);
-  //     }
-  //   })
-  // }
-
-  // async #humanGridListeners(shipSize) {
-  //   const gridItems = document.querySelectorAll(".grid-item.human");
-
-  //   gridItems.forEach(async (item) => {
-  //     item.addEventListener("click", async () => {
-  //       let coords = item.dataset.coordinates
-  //         .split(",")
-  //         .map((x) => parseInt(x, 10));
-  //       this.human.board.placeShip(shipSize, coords, orientation);
-  //     }).then(response => {
-  //       return true;
-  //     })
-  //   });
-  // }
-
-  // async #humanShipPlacement(shipSize) {
-  //   const orientation = document.getElementById('orientationBtn').textContent;
-  //   const coord = this.#humanGridListeners();
-  //   this.human.board.placeShip(shipSize, coord, orientation)
-  // }
-
   #orientationBtnListener() {
-    const orientation = document.getElementById('orientationBtn');
-    orientation.display = 'block';
+    const orientation = document.getElementById("orientationBtn");
+    orientation.display = "block";
 
-    orientation.addEventListener('click', () => {
+    orientation.addEventListener("click", () => {
       let text = orientation.textContent;
-      orientation.textContent = text === 'horizontal' ? 'vertical' : 'horizontal';
-    })
+      orientation.textContent =
+        text === "horizontal" ? "vertical" : "horizontal";
+    });
   }
 
   aiGridListeners() {
     const gridItems = document.querySelectorAll(".grid-item.ai");
     gridItems.forEach((item) => {
       item.addEventListener("click", () => {
-        let coords = item.dataset.coordinates
-          .split(",")
-          .map((x) => parseInt(x, 10));
-        if (this.ai.board.receiveAttack(coords)) {
-          // if a ship is hit then ...
-          this.page.hit(item);
-        } else {
-          // if a ship is not hit then ...
-          this.page.miss(item);
+        if (this.currentPlayer === this.human) {
+          let coords = item.dataset.coordinates
+            .split(",")
+            .map((x) => parseInt(x, 10));
+          if (this.ai.board.receiveAttack(coords)) {
+            // if a ship is hit then ...
+            this.page.hit(item);
+            this.round++;
+          } else {
+            // if a ship is not hit then ...
+            this.page.miss(item);
+            this.round++;
+          }
         }
       });
     });
@@ -145,5 +136,13 @@ export default class Gameloop {
       }
     });
     return foundItem;
+  }
+
+  #gameOver() {
+    if (this.human.board.gameOver() || this.ai.board.gameOver()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
