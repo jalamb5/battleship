@@ -4,6 +4,7 @@ export default class Gameboard {
   constructor() {
     this.allShips = [];
     this.missedShots = [];
+    this.allShots = [];
   };
 
   placeShip(size, firstCoord, orientation='horizontal') {
@@ -23,6 +24,7 @@ export default class Gameboard {
   // receiveAttack function takes coordinates, determines whether or not the attack hit a ship
   // then sends the ‘hit’ function to the correct ship, or records the coordinates of the missed shot.
   receiveAttack(coordinate) {
+    this.allShots.push(coordinate);
     const ship = this.#findShip(coordinate);
     if (ship) {
       ship.hit();

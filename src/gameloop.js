@@ -126,7 +126,7 @@ export default class Gameloop {
 
   #aiAttack() {
     if (this.currentPlayer === this.ai && this.round) {
-      let coord = [this.#randomNum(10), this.#randomNum(10)];
+      let coord = this.#aiCoordSelector();
       let item = this.#findGridItem(coord, 'human');
       if (this.human.board.receiveAttack(coord)) {
         // if a ship is hit then ...
@@ -138,6 +138,17 @@ export default class Gameloop {
         this.round++;
       }
     }
+  }
+
+  #aiCoordSelector() {
+    let coord = [this.#randomNum(10), this.#randomNum(10)];
+    // Check if coord has already been used, if so rerun function.
+    this.human.board.allShots.forEach(shot => {
+      if (shot[0] === coord[0] && shot[1] === coord[1]) {
+        return this.#aiCoordSelector();
+      }
+    })
+    return coord;
   }
 
   #randomNum(max) {
