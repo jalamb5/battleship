@@ -20,6 +20,7 @@ export default class Gameloop {
 
     const playRound = () => {
       if (!this.#gameOver()) {
+        this.#aiAttack();
         if (currentRound !== this.round) {
           this.currentPlayer = this.currentPlayer === this.human ? this.ai : this.human;
           currentRound = this.round;
@@ -121,6 +122,22 @@ export default class Gameloop {
         : [this.#randomNum(10), this.#randomNum(10 - ship)];
     let coordinates = this.ai.board.placeShip(ship, coord, orientation);
     return coordinates;
+  }
+
+  #aiAttack() {
+    if (this.currentPlayer === this.ai && this.round) {
+      let coord = [this.#randomNum(10), this.#randomNum(10)];
+      let item = this.#findGridItem(coord, 'human');
+      if (this.human.board.receiveAttack(coord)) {
+        // if a ship is hit then ...
+        this.page.hit(item);
+        this.round++;
+      } else {
+        // if a ship is not hit then ...
+        this.page.miss(item);
+        this.round++;
+      }
+    }
   }
 
   #randomNum(max) {
