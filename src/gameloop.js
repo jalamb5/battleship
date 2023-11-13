@@ -26,12 +26,27 @@ export default class Gameloop {
           currentRound = this.round;
         }
         setTimeout(playRound, 0); // Schedule the next round after a very short delay
+      } else {
+        this.#endGame();
       }
     };
 
     playRound();
   }
 
+  #endGame() {
+    const winner = this.#gameOver() === this.human ? 'You' : 'Computer';
+    const aiGridItems = document.querySelectorAll(".grid-item.ai");
+    // display the winner
+    this.page.displayWinner(winner);
+    // reveal all boards
+    aiGridItems.forEach(item => {
+      let coords = item.dataset.coordinates
+      .split(",")
+      .map((x) => parseInt(x, 10));
+      this.#aiBoardAttack(coords, item);
+    })
+  }
 
   humanGridListeners() {
     this.#orientationBtnListener();
@@ -84,18 +99,27 @@ export default class Gameloop {
           let coords = item.dataset.coordinates
             .split(",")
             .map((x) => parseInt(x, 10));
-          if (this.ai.board.receiveAttack(coords)) {
-            // if a ship is hit then ...
-            this.page.hit(item);
-            this.round++;
-          } else {
-            // if a ship is not hit then ...
-            this.page.miss(item);
-            this.round++;
-          }
+          this.#aiBoardAttack(coords, item);
         }
       });
     });
+  }
+
+  #aiBoardAttack(coords, gridItem) {
+    let attackedShip = this.ai.board.receiveAttack(coords)
+    if (attackedShip) {
+      // if a ship is hit, mark square as red.
+      this.page.hit(gridItem);
+      this.round++;
+      // if ship is sunk, display global message.
+      if (attackedShip.isSunk()) {
+        this.page.displaySunkMessage(attackedShip);
+      }
+    } else {
+      // if a ship is not hit, mark square as blue.
+      this.page.miss(gridItem);
+      this.round++;
+    }
   }
 
   #aiShips() {
@@ -127,14 +151,19 @@ export default class Gameloop {
   #aiAttack() {
     if (this.currentPlayer === this.ai && this.round) {
       let coord = this.#aiCoordSelector();
-      let item = this.#findGridItem(coord, 'human');
-      if (this.human.board.receiveAttack(coord)) {
-        // if a ship is hit then ...
-        this.page.hit(item);
+      let gridItem = this.#findGridItem(coord, 'human');
+      let attackedShip = this.human.board.receiveAttack(coord)
+      if (attackedShip) {
+        // if a ship is hit, mark square as red.
+        this.page.hit(gridItem);
         this.round++;
+        // if ship is sunk, display global message.
+        if (attackedShip.isSunk()) {
+          this.page.displaySunkMessage(attackedShip);
+        }
       } else {
-        // if a ship is not hit then ...
-        this.page.miss(item);
+        // if a ship is not hit, mark square as blue.
+        this.page.miss(gridItem);
         this.round++;
       }
     }
@@ -167,8 +196,13 @@ export default class Gameloop {
   }
 
   #gameOver() {
-    if (this.human.board.gameOver() || this.ai.board.gameOver()) {
-      return true;
+    // AI wins if human board is game over.
+    if (this.human.board.gameOver()) {
+      return this.ai;
+    // Human wins if ai board is game over.
+    } else if (this.ai.board.gameOver()) {
+      return this.human;
+    // Else game continues.
     } else {
       return false;
     }

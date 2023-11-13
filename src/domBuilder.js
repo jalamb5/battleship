@@ -9,6 +9,8 @@ export default class DOMbuilder {
       // 2 player containers
     this.playerContainer = document.createElement('div');
     this.aiContainer = document.createElement('div');
+    this.globalMsg = document.createElement('div');
+    this.globalMsg.id = 'global-msg';
     this.playerContainer.classList.add('player-container');
     this.aiContainer.classList.add('player-container');
       // each container contains:
@@ -34,7 +36,7 @@ export default class DOMbuilder {
       this.playerContainer.append(playerTitle, playerGrid, this.playerMsg, orientationBtn);
       this.aiContainer.append(aiTitle, aiGrid);
 
-    this.gameContainer.append(this.playerContainer, this.aiContainer);
+    this.gameContainer.append(this.playerContainer, this.aiContainer, this.globalMsg);
   }
 
   hit(gridItem) {
@@ -61,6 +63,22 @@ export default class DOMbuilder {
     } else {
       msg.textContent = '';
     }
+  }
+
+  displaySunkMessage(ship) {
+    this.globalMsg.textContent = `${ship.shipType} has been sunk.`
+    setTimeout(() => {
+      this.#clearGlobalMsg();
+    }, 3000);
+  }
+
+  displayWinner(winner) {
+    const winnerMsg = document.createTextNode(`Winner: ${winner}!`);
+    this.globalMsg.appendChild(winnerMsg);
+  }
+
+  #clearGlobalMsg() {
+    this.globalMsg.textContent = '';
   }
 
   #gridPopulate(player) {

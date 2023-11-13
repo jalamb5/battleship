@@ -8,6 +8,11 @@ body {
   align-self: center;
 }
 
+#global-msg {
+  display: inline;
+  align-self: center;
+}
+
 #game-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -41,3 +46,5 @@ body {
 .ship {
   background-color: black;
 }
+
+

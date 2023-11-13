@@ -28,7 +28,7 @@ export default class Gameboard {
     const ship = this.#findShip(coordinate);
     if (ship) {
       ship.hit();
-      return true;
+      return ship;
     } else {
       this.missedShots.push(coordinate);
       return false;
