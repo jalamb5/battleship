@@ -9,16 +9,14 @@ export default class Gameboard {
 
   placeShip(size, firstCoord, orientation='horizontal') {
     const coordinates = this.#buildCoordinates(size, firstCoord, orientation);
-    coordinates.forEach((coord) => {
-      // If a ship already exists at location, reject it.
-      if (this.#findShip(coord)) {
-        return false;
-      }
-    })
-    const newShip = new Ship(size);
-    const shipEntry = [newShip, coordinates];
-    this.allShips.push(shipEntry);
-    return coordinates;
+    if (this.#validateCoordinates(coordinates)) {
+      const newShip = new Ship(size);
+      const shipEntry = [newShip, coordinates];
+      this.allShips.push(shipEntry);
+      return coordinates;
+    } else {
+      return false;
+    }
   }
 
   // receiveAttack function takes coordinates, determines whether or not the attack hit a ship
@@ -59,6 +57,17 @@ export default class Gameboard {
       }
     }
     return coordinates;
+  }
+
+  #validateCoordinates(coordinates) {
+    let validCoords = true;
+    coordinates.forEach((coord) => {
+      // If a ship already exists at location, reject it.
+      if (this.#findShip(coord) || coord > 9) {
+        validCoords = false;
+      }
+    })
+    return validCoords;
   }
 
   #findShip(coordinate) {
