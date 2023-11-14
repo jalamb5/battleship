@@ -56,11 +56,17 @@ export default class DOMbuilder {
     element.style.display = 'none';
   }
 
-  updatePlayerMsg(counter) {
+  updatePlayerMsg(counter, error=null) {
     let msg = this.playerMsg;
-    if (counter < 5) {
+    if (error) {
+      msg.textContent = 'Invalid placement location';
+      setTimeout(() => {
+        this.updatePlayerMsg(counter);
+      }, 1000)
+    } else if (counter < 5) {
       msg.textContent = `Click grid to place ${this.shipNames[counter]} (size: ${this.shipSizes[counter]})`
-    } else {
+    }
+    else {
       this.#clearMsg(msg);
     }
   }

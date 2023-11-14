@@ -63,7 +63,7 @@ export default class Gameboard {
     let validCoords = true;
     coordinates.forEach((coord) => {
       // If a ship already exists at location, reject it.
-      if (this.#findShip(coord) || coord > 9) {
+      if (this.#findShip(coord) || coord[0] > 9 || coord[1] > 9) {
         validCoords = false;
       }
     })

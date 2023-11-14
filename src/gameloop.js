@@ -70,12 +70,17 @@ export default class Gameloop {
           coords,
           orientation
         );
-        // Show ship on screen.
-        coordinates.forEach((coord) => {
-          this.page.ship(this.#findGridItem(coord, "human"));
-        });
-        placementCounter++;
-        this.page.updatePlayerMsg(placementCounter);
+        // Show ship on screen, if valid placement.
+        if (coordinates) {
+          coordinates.forEach((coord) => {
+            this.page.ship(this.#findGridItem(coord, "human"));
+          });
+          placementCounter++;
+          this.page.updatePlayerMsg(placementCounter);
+        // Display error message if placement goes off board or conflicts with existing ship.
+      } else {
+        this.page.updatePlayerMsg(placementCounter, "error");
+      }
       });
     });
   }
