@@ -112,7 +112,7 @@ export default class Gameloop {
       this.page.hit(gridItem);
       this.round++;
       // if ship is sunk, display global message.
-      if (attackedShip.isSunk()) {
+      if (attackedShip.isSunk() && !this.#gameOver()) {
         this.page.displaySunkMessage(attackedShip);
       }
     } else {

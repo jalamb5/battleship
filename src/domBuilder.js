@@ -61,14 +61,15 @@ export default class DOMbuilder {
     if (counter < 5) {
       msg.textContent = `Click grid to place ${this.shipNames[counter]} (size: ${this.shipSizes[counter]})`
     } else {
-      msg.textContent = '';
+      this.#clearMsg(msg);
     }
   }
 
   displaySunkMessage(ship) {
-    this.globalMsg.textContent = `${ship.shipType} has been sunk.`
+    const sunkMsg = document.createTextNode(`${ship.shipType} has been sunk.`)
+    this.globalMsg.appendChild(sunkMsg);
     setTimeout(() => {
-      this.#clearGlobalMsg();
+      this.#clearMsg(sunkMsg);
     }, 3000);
   }
 
@@ -77,8 +78,8 @@ export default class DOMbuilder {
     this.globalMsg.appendChild(winnerMsg);
   }
 
-  #clearGlobalMsg() {
-    this.globalMsg.textContent = '';
+  #clearMsg(msgElement) {
+    msgElement.remove();
   }
 
   #gridPopulate(player) {
