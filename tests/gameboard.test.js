@@ -19,10 +19,10 @@ test('ship of size 4 is placed at mutliple coordinates', () => {
   expect(board.allShips[0][1]).toStrictEqual([[0, 0],[1, 0],[2, 0], [3, 0]])
 })
 
-test('ship of size 20 is placed at multiple coordinates', () => {
+test('ship of size 10 is placed at multiple coordinates', () => {
   const board = new Gameboard;
-  board.placeShip(20, [0, 0]);
-  expect(board.allShips[0][1].length).toBe(20);
+  board.placeShip(10, [0, 0]);
+  expect(board.allShips[0][1].length).toBe(10);
 })
 
 test('Gameboard received an attack and hits the correct ship', () => {

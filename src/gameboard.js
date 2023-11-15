@@ -4,6 +4,7 @@ export default class Gameboard {
   constructor() {
     this.allShips = [];
     this.missedShots = [];
+    this.hitShots = [];
     this.allShots = [];
   };
 
@@ -26,6 +27,7 @@ export default class Gameboard {
     const ship = this.#findShip(coordinate);
     if (ship) {
       ship.hit();
+      this.hitShots.push(coordinate);
       return ship;
     } else {
       this.missedShots.push(coordinate);

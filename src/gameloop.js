@@ -175,9 +175,35 @@ export default class Gameloop {
   }
 
   #aiCoordSelector() {
-    let coord = [this.#randomNum(10), this.#randomNum(10)];
+    const human = this.human.board;
+    let coord = [];
+    // if a ship has been hit, use most recent hit to determine next shot.
+    if (human.hitShots.length > 0) {
+      const hitCoord = human.hitShots.at(-1);
+      const lastShot = human.allShots.at(-1);
+      switch (lastShot) {
+        case lastShot[0] === hitCoord[0] && lastShot[1] === hitCoord[1]:
+          coord = [hitCoord[0] + 1, hitCoord[1]];
+          break;
+        case lastShot[0] === hitCoord[0] + 1 && lastShot[1] === hitCoord[1]:
+          coord = [hitCoord[0] - 1, hitCoord[1]];
+          break;
+        case lastShot[0] === hitCoord[0] - 1 && lastShot[1] === hitCoord[1]:
+          coord = [hitCoord[0], hitCoord[1] + 1];
+          break;
+        case lastShot[0] === hitCoord[0] - 1 && lastShot[1] === hitCoord[1]:
+          coord = [hitCoord[0], hitCoord[1] - 1];
+          break;
+        default:
+          coord = [this.#randomNum(10), this.#randomNum(10)];
+      }
+    } else {
+      // if no ship has been hit, use random coord.
+      coord = [this.#randomNum(10), this.#randomNum(10)];
+    }
+
     // Check if coord has already been used, if so rerun function.
-    this.human.board.allShots.forEach(shot => {
+    human.allShots.forEach(shot => {
       if (shot[0] === coord[0] && shot[1] === coord[1]) {
         return this.#aiCoordSelector();
       }
