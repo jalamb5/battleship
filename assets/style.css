@@ -8,15 +8,15 @@ body {
   align-self: center;
 }
 
-#global-msg {
-  display: inline;
-  align-self: center;
-}
-
 #game-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 10px;
+}
+
+#global-msg {
+  grid-column: 1 / 3;
+  justify-self: center;
 }
 
 .player-container {
@@ -46,5 +46,3 @@ body {
 .ship {
   background-color: black;
 }
-
-
