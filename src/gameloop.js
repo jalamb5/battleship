@@ -143,9 +143,9 @@ export default class Gameloop {
       }
 
       // show ai ships while testing.
-      coordinates.forEach((coord) => {
-        this.page.ship(this.#findGridItem(coord, "ai"));
-      });
+      // coordinates.forEach((coord) => {
+      //   this.page.ship(this.#findGridItem(coord, "ai"));
+      // });
     });
   }
 
