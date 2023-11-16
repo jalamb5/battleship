@@ -37,6 +37,7 @@ export default class Gameloop {
   #endGame() {
     const winner = this.#gameOver() === this.human ? 'You' : 'Computer';
     const aiGridItems = document.querySelectorAll(".grid-item.ai");
+    const humanGridItems = document.querySelectorAll(".grid-item.human");
     // display the winner
     this.page.displayWinner(winner);
     // reveal all boards
@@ -45,6 +46,11 @@ export default class Gameloop {
       .split(",")
       .map((x) => parseInt(x, 10));
       this.#aiBoardAttack(coords, item);
+    })
+    humanGridItems.forEach(item => {
+      if (!item.classList.contains("ship") && !item.classList.contains("hit")) {
+        this.page.miss(item);
+      }
     })
   }
 
