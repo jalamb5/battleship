@@ -174,28 +174,23 @@ export default class Gameloop {
     }
   }
 
-  #aiCoordSelector() {
+  #aiCoordSelector(previousCoord=null, accumulator=0) {
     const human = this.human.board;
     let coord = [];
     // if a ship has been hit, use most recent hit to determine next shot.
-    if (human.hitShots.length > 0) {
+    if (human.hitShots.length > 0 && accumulator < 4) {
       const hitCoord = human.hitShots.at(-1);
-      const lastShot = human.allShots.at(-1);
-      switch (lastShot) {
-        case lastShot[0] === hitCoord[0] && lastShot[1] === hitCoord[1]:
-          coord = [hitCoord[0] + 1, hitCoord[1]];
-          break;
-        case lastShot[0] === hitCoord[0] + 1 && lastShot[1] === hitCoord[1]:
-          coord = [hitCoord[0] - 1, hitCoord[1]];
-          break;
-        case lastShot[0] === hitCoord[0] - 1 && lastShot[1] === hitCoord[1]:
-          coord = [hitCoord[0], hitCoord[1] + 1];
-          break;
-        case lastShot[0] === hitCoord[0] - 1 && lastShot[1] === hitCoord[1]:
-          coord = [hitCoord[0], hitCoord[1] - 1];
-          break;
-        default:
-          coord = [this.#randomNum(10), this.#randomNum(10)];
+      const lastShot = previousCoord === null ? human.allShots.at(-1) : previousCoord;
+      if (lastShot[0] === hitCoord[0] && lastShot[1] === hitCoord[1]) {
+        coord = [hitCoord[0] + 1, hitCoord[1]];
+      } else if (lastShot[0] === hitCoord[0] + 1 && lastShot[1] === hitCoord[1]) {
+        coord = [hitCoord[0] - 1, hitCoord[1]];
+      } else if (lastShot[0] === hitCoord[0] - 1 && lastShot[1] === hitCoord[1]) {
+        coord = [hitCoord[0], hitCoord[1] + 1];
+      } else if (lastShot[0] === hitCoord[0] && lastShot[1] === hitCoord[1] + 1) {
+        coord = [hitCoord[0], hitCoord[1] - 1];
+      } else {
+        coord = [this.#randomNum(10), this.#randomNum(10)];
       }
     } else {
       // if no ship has been hit, use random coord.
@@ -205,9 +200,13 @@ export default class Gameloop {
     // Check if coord has already been used, if so rerun function.
     human.allShots.forEach(shot => {
       if (shot[0] === coord[0] && shot[1] === coord[1]) {
-        return this.#aiCoordSelector();
+        coord = this.#aiCoordSelector(coord, accumulator + 1);
       }
     })
+    // Check if coord is on board, if not rerun.
+    if (coord[0] > 9 || coord[0] < 0 || coord[1] > 9 || coord[1] < 0) {
+      coord = this.#aiCoordSelector(coord, accumulator + 1);
+    }
     return coord;
   }
 
