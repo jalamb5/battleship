@@ -71,8 +71,8 @@ export default class DOMbuilder {
     }
   }
 
-  displaySunkMessage(ship) {
-    const sunkMsg = document.createTextNode(`${ship.shipType} has been sunk.`)
+  displaySunkMessage(ship, player) {
+    const sunkMsg = document.createTextNode(`${player} ${ship.shipType} has been sunk.`)
     this.globalMsg.appendChild(sunkMsg);
     setTimeout(() => {
       this.#clearMsg(sunkMsg);

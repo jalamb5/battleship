@@ -124,7 +124,7 @@ export default class Gameloop {
       this.round++;
       // if ship is sunk, display global message.
       if (attackedShip.isSunk() && !this.#gameOver()) {
-        this.page.displaySunkMessage(attackedShip);
+        this.page.displaySunkMessage(attackedShip, "Computer's");
       }
     } else {
       // if a ship is not hit, mark square as blue.
@@ -137,11 +137,10 @@ export default class Gameloop {
     const shipSizes = [5, 4, 3, 3, 2];
     shipSizes.forEach((ship) => {
       let coordinates = this.#aiShipPlacement(ship);
-
+      // Rerun placement until valid placement found.
       while (!coordinates) {
         coordinates = this.#aiShipPlacement(ship);
       }
-
       // show ai ships while testing.
       // coordinates.forEach((coord) => {
       //   this.page.ship(this.#findGridItem(coord, "ai"));
@@ -170,7 +169,7 @@ export default class Gameloop {
         this.round++;
         // if ship is sunk, display global message.
         if (attackedShip.isSunk()) {
-          this.page.displaySunkMessage(attackedShip);
+          this.page.displaySunkMessage(attackedShip, "Player's");
         }
       } else {
         // if a ship is not hit, mark square as blue.
