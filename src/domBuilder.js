@@ -25,13 +25,13 @@ export default class DOMbuilder {
         const playerGrid = this.#gridPopulate('human');
         const aiGrid = this.#gridPopulate('ai');
 
-        this.playerMsg = document.createTextNode('');
+        this.playerMsg = document.createElement('p');
+        this.playerMsg.id = 'player-msg';
         this.updatePlayerMsg(0);
-        this.playerMsg.id = 'playerMsg';
 
         const orientationBtn = document.createElement('button');
         orientationBtn.textContent = 'horizontal';
-        orientationBtn.id = 'orientationBtn';
+        orientationBtn.id = 'orientation-btn';
 
       this.playerContainer.append(playerTitle, playerGrid, this.playerMsg, orientationBtn);
       this.aiContainer.append(aiTitle, aiGrid);

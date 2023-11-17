@@ -9,6 +9,7 @@ export default class Gameboard {
   };
 
   placeShip(size, firstCoord, orientation='horizontal') {
+    orientation = orientation.toLowerCase();
     const coordinates = this.#buildCoordinates(size, firstCoord, orientation);
     if (this.#validateCoordinates(coordinates)) {
       const newShip = new Ship(size);

@@ -56,7 +56,7 @@ export default class Gameloop {
 
   humanGridListeners() {
     this.#orientationBtnListener();
-    const orientationBtn = document.getElementById("orientationBtn");
+    const orientationBtn = document.getElementById("orientation-btn");
     const gridItems = document.querySelectorAll(".grid-item.human");
     let placementCounter = 0;
     let shipSize = [5, 4, 3, 3, 2];
@@ -92,7 +92,7 @@ export default class Gameloop {
   }
 
   #orientationBtnListener() {
-    const orientation = document.getElementById("orientationBtn");
+    const orientation = document.getElementById("orientation-btn");
     orientation.display = "block";
 
     orientation.addEventListener("click", () => {
