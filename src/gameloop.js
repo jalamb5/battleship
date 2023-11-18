@@ -22,7 +22,8 @@ export default class Gameloop {
       if (!this.#gameOver()) {
         this.#aiAttack();
         if (currentRound !== this.round) {
-          this.currentPlayer = this.currentPlayer === this.human ? this.ai : this.human;
+          this.currentPlayer =
+            this.currentPlayer === this.human ? this.ai : this.human;
           currentRound = this.round;
         }
         setTimeout(playRound, 0); // Schedule the next round after a very short delay
@@ -35,23 +36,23 @@ export default class Gameloop {
   }
 
   #endGame() {
-    const winner = this.#gameOver() === this.human ? 'You' : 'Computer';
+    const winner = this.#gameOver() === this.human ? "You" : "Computer";
     const aiGridItems = document.querySelectorAll(".grid-item.ai");
     const humanGridItems = document.querySelectorAll(".grid-item.human");
     // display the winner
     this.page.displayWinner(winner);
     // reveal all boards
-    aiGridItems.forEach(item => {
+    aiGridItems.forEach((item) => {
       let coords = item.dataset.coordinates
-      .split(",")
-      .map((x) => parseInt(x, 10));
+        .split(",")
+        .map((x) => parseInt(x, 10));
       this.#aiBoardAttack(coords, item);
-    })
-    humanGridItems.forEach(item => {
+    });
+    humanGridItems.forEach((item) => {
       if (!item.classList.contains("ship") && !item.classList.contains("hit")) {
         this.page.miss(item);
       }
-    })
+    });
   }
 
   humanGridListeners() {
@@ -83,10 +84,10 @@ export default class Gameloop {
           });
           placementCounter++;
           this.page.updatePlayerMsg(placementCounter);
-        // Display error message if placement goes off board or conflicts with existing ship.
-      } else {
-        this.page.updatePlayerMsg(placementCounter, "error");
-      }
+          // Display error message if placement goes off board or conflicts with existing ship.
+        } else {
+          this.page.updatePlayerMsg(placementCounter, "error");
+        }
       });
     });
   }
@@ -118,7 +119,10 @@ export default class Gameloop {
 
   // Prevent accidentally attacking previously clicked grid item.
   #validItem(gridItem) {
-    if (gridItem.classList.contains("hit") || gridItem.classList.contains("miss")) {
+    if (
+      gridItem.classList.contains("hit") ||
+      gridItem.classList.contains("miss")
+    ) {
       return false;
     } else {
       return true;
@@ -126,7 +130,7 @@ export default class Gameloop {
   }
 
   #aiBoardAttack(coords, gridItem) {
-    let attackedShip = this.ai.board.receiveAttack(coords)
+    let attackedShip = this.ai.board.receiveAttack(coords);
     if (attackedShip) {
       // if a ship is hit, mark square as red.
       this.page.hit(gridItem);
@@ -170,8 +174,8 @@ export default class Gameloop {
   #aiAttack() {
     if (this.currentPlayer === this.ai && this.round) {
       let coord = this.#aiCoordSelector();
-      let gridItem = this.#findGridItem(coord, 'human');
-      let attackedShip = this.human.board.receiveAttack(coord)
+      let gridItem = this.#findGridItem(coord, "human");
+      let attackedShip = this.human.board.receiveAttack(coord);
       if (attackedShip) {
         // if a ship is hit, mark square as red.
         this.page.hit(gridItem);
@@ -188,20 +192,30 @@ export default class Gameloop {
     }
   }
 
-  #aiCoordSelector(previousCoord=null, accumulator=0) {
+  #aiCoordSelector(previousCoord = null, accumulator = 0) {
     const human = this.human.board;
     let coord = [];
     // if a ship has been hit, use most recent hit to determine next shot.
     if (human.hitShots.length > 0 && accumulator < 4) {
       const hitCoord = human.hitShots.at(-1);
-      const lastShot = previousCoord === null ? human.allShots.at(-1) : previousCoord;
+      const lastShot =
+        previousCoord === null ? human.allShots.at(-1) : previousCoord;
       if (lastShot[0] === hitCoord[0] && lastShot[1] === hitCoord[1]) {
         coord = [hitCoord[0] + 1, hitCoord[1]];
-      } else if (lastShot[0] === hitCoord[0] + 1 && lastShot[1] === hitCoord[1]) {
+      } else if (
+        lastShot[0] === hitCoord[0] + 1 &&
+        lastShot[1] === hitCoord[1]
+      ) {
         coord = [hitCoord[0] - 1, hitCoord[1]];
-      } else if (lastShot[0] === hitCoord[0] - 1 && lastShot[1] === hitCoord[1]) {
+      } else if (
+        lastShot[0] === hitCoord[0] - 1 &&
+        lastShot[1] === hitCoord[1]
+      ) {
         coord = [hitCoord[0], hitCoord[1] + 1];
-      } else if (lastShot[0] === hitCoord[0] && lastShot[1] === hitCoord[1] + 1) {
+      } else if (
+        lastShot[0] === hitCoord[0] &&
+        lastShot[1] === hitCoord[1] + 1
+      ) {
         coord = [hitCoord[0], hitCoord[1] - 1];
       } else {
         coord = [this.#randomNum(10), this.#randomNum(10)];
@@ -212,11 +226,11 @@ export default class Gameloop {
     }
 
     // Check if coord has already been used, if so rerun function.
-    human.allShots.forEach(shot => {
+    human.allShots.forEach((shot) => {
       if (shot[0] === coord[0] && shot[1] === coord[1]) {
         coord = this.#aiCoordSelector(coord, accumulator + 1);
       }
-    })
+    });
     // Check if coord is on board, if not rerun.
     if (coord[0] > 9 || coord[0] < 0 || coord[1] > 9 || coord[1] < 0) {
       coord = this.#aiCoordSelector(coord, accumulator + 1);
@@ -243,10 +257,10 @@ export default class Gameloop {
     // AI wins if human board is game over.
     if (this.human.board.gameOver()) {
       return this.ai;
-    // Human wins if ai board is game over.
+      // Human wins if ai board is game over.
     } else if (this.ai.board.gameOver()) {
       return this.human;
-    // Else game continues.
+      // Else game continues.
     } else {
       return false;
     }

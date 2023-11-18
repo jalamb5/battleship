@@ -1,4 +1,4 @@
-import Ship from './ships';
+import Ship from "./ships";
 
 export default class Gameboard {
   constructor() {
@@ -6,9 +6,9 @@ export default class Gameboard {
     this.missedShots = [];
     this.hitShots = [];
     this.allShots = [];
-  };
+  }
 
-  placeShip(size, firstCoord, orientation='horizontal') {
+  placeShip(size, firstCoord, orientation = "horizontal") {
     orientation = orientation.toLowerCase();
     const coordinates = this.#buildCoordinates(size, firstCoord, orientation);
     if (this.#validateCoordinates(coordinates)) {
@@ -42,18 +42,18 @@ export default class Gameboard {
     if (this.allShips.length === 0) {
       return false;
     }
-    this.allShips.forEach(ship => {
+    this.allShips.forEach((ship) => {
       if (!ship[0].isSunk()) {
         allSunk = false;
       }
-    })
+    });
     return allSunk;
   }
 
   #buildCoordinates(size, firstCoord, orientation) {
     let coordinates = [];
     for (let i = 0; i < size; i++) {
-      if (orientation === 'horizontal') {
+      if (orientation === "horizontal") {
         coordinates.push([firstCoord[0] + i, firstCoord[1]]);
       } else {
         coordinates.push([firstCoord[0], firstCoord[1] + i]);
@@ -69,16 +69,19 @@ export default class Gameboard {
       if (this.#findShip(coord) || coord[0] > 9 || coord[1] > 9) {
         validCoords = false;
       }
-    })
+    });
     return validCoords;
   }
 
   #findShip(coordinate) {
     let foundShip = false;
-    this.allShips.forEach(ship => {
-      if (ship[1].some((x) => x[0] === coordinate[0] && x[1] === coordinate[1])) {
+    this.allShips.forEach((ship) => {
+      if (
+        ship[1].some((x) => x[0] === coordinate[0] && x[1] === coordinate[1])
+      ) {
         foundShip = ship[0];
-    }})
+      }
+    });
     return foundShip;
   }
 }

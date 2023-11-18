@@ -1,6 +1,12 @@
 export default class Ship {
   constructor(size) {
-    const shipTypes = {5 : 'Carrier', 4 : 'Battleship', 3 : 'Destroyer', 3 : 'Submarine', 2 : 'Patrol Boat'}
+    const shipTypes = {
+      5: "Carrier",
+      4: "Battleship",
+      3: "Destroyer",
+      3: "Submarine",
+      2: "Patrol Boat",
+    };
     this.length = size;
     this.shipType = shipTypes[size];
     this.hits = 0;

@@ -1,11 +1,11 @@
 import Gameboard from "./gameboard";
 
 export default class Player {
-  constructor(human=true) {
-    this.board = new Gameboard;
+  constructor(human = true) {
+    this.board = new Gameboard();
     this.isHuman = human;
     this.previousPlays = [];
-  };
+  }
 
   attack(player, coordinate) {
     if (!this.isHuman) {
