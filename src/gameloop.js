@@ -106,7 +106,7 @@ export default class Gameloop {
     const gridItems = document.querySelectorAll(".grid-item.ai");
     gridItems.forEach((item) => {
       item.addEventListener("click", () => {
-        if (this.currentPlayer === this.human) {
+        if (this.currentPlayer === this.human && this.#validItem(item)) {
           let coords = item.dataset.coordinates
             .split(",")
             .map((x) => parseInt(x, 10));
@@ -114,6 +114,15 @@ export default class Gameloop {
         }
       });
     });
+  }
+
+  // Prevent accidentally attacking previously clicked grid item.
+  #validItem(gridItem) {
+    if (gridItem.classList.contains("hit") || gridItem.classList.contains("miss")) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   #aiBoardAttack(coords, gridItem) {
